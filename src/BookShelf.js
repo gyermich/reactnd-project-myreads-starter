@@ -3,6 +3,10 @@ import BooksGrid from './BooksGrid'
 
 
 class BookShelf extends React.Component {
+    formatCamelCaseToSentence(shelf) {
+        // inject space before the upper case letters
+        return shelf.replace(/([A-Z])/g, (match) => ` ${match}`)
+    }
     render() {
         const shelf = this.props.shelf;
         const books = this.props.books;
@@ -12,7 +16,7 @@ class BookShelf extends React.Component {
               {/*
                 inject space before the upper case letters
               */}
-                <h2 className="bookshelf-title" style={{textTransform: 'capitalize' }} >{shelf.replace(/([A-Z])/g, (match) => ` ${match}`)}</h2>
+                <h2 className="bookshelf-title" style={{textTransform: 'capitalize' }} >{this.formatCamelCaseToSentence(shelf)}</h2>
                 <div className="bookshelf-books">
                   <BooksGrid books={books}/>
                 </div>

@@ -9,12 +9,19 @@ class BooksApp extends React.Component {
   state = {
     shelves: [],
     books: [],
-    query: '',
+    searchResults: [],
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.input)
+    const query = e.target.value.trim();
+    BooksAPI.search(query).then((results) => {
+      this.setState({ searchResults:  results})
+      // doesn't catch yet for some reason
+    }).catch((err) => {
+      this.setState({ searchResults: [] })
+    })
+
   }
 
   componentDidMount() {
@@ -24,17 +31,7 @@ class BooksApp extends React.Component {
         .filter((value, index, self) => self.indexOf(value) === index)
       // add books and shelves to state
       this.setState({ shelves, books })
-      console.log(books);
     })
-  }
-
-  updateQuery = (query) => {
-    this.setState(() => ({
-      query: query.trim()
-    }))
-  }
-  clearQuery = () => {
-    this.updateQuery('')
   }
 
   render() {
@@ -57,13 +54,14 @@ class BooksApp extends React.Component {
 
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
+                  { this.searchResults ? <BooksGrid books={this.state.searchResults}/> : 'No results' }
                 */}
-                <input type="text" placeholder="Search by title or author" onSubmit={this.handleSubmit}/>
+                <input type="text" placeholder="Search by title or author" onChange={this.handleSubmit}/>
 
               </div>
             </div>
             <div className="search-books-results">
-              <BooksGrid books={this.state.books}/>
+              <BooksGrid books={this.state.searchResults}/>
             </div>
           </div>
         )} />
