@@ -8,7 +8,8 @@ import BookShelf from './BookShelf'
 class BooksApp extends React.Component {
   state = {
     shelves: [],
-    books: []
+    books: [],
+    query: '',
   }
 
   handleSubmit = (e) => {
@@ -25,6 +26,15 @@ class BooksApp extends React.Component {
       this.setState({ shelves, books })
       console.log(books);
     })
+  }
+
+  updateQuery = (query) => {
+    this.setState(() => ({
+      query: query.trim()
+    }))
+  }
+  clearQuery = () => {
+    this.updateQuery('')
   }
 
   render() {
@@ -53,7 +63,7 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="search-books-results">
-              <BooksGrid/>
+              <BooksGrid books={this.state.books}/>
             </div>
           </div>
         )} />
@@ -63,7 +73,10 @@ class BooksApp extends React.Component {
               <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-              <BookShelf/>
+            { this.state.shelves.map(shelf =>
+              <BookShelf shelf={shelf} books={this.state.books.filter((book) => book.shelf === shelf)}/>
+            )}
+
             </div>
             <div className="open-search">
               <Link

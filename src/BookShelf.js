@@ -4,12 +4,17 @@ import BooksGrid from './BooksGrid'
 
 class BookShelf extends React.Component {
     render() {
+        const shelf = this.props.shelf;
+        const books = this.props.books;
         return (
             <div>
               <div className="bookshelf">
-                <h2 className="bookshelf-title">Currently Reading</h2>
+              {/*
+                inject space before the upper case letters
+              */}
+                <h2 className="bookshelf-title" style={{textTransform: 'capitalize' }} >{shelf.replace(/([A-Z])/g, (match) => ` ${match}`)}</h2>
                 <div className="bookshelf-books">
-                  <BooksGrid/>
+                  <BooksGrid books={books}/>
                 </div>
               </div>
             </div>
