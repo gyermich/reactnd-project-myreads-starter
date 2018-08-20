@@ -1,3 +1,15 @@
+# Instructions
+
+To run the application:
+ - download the repository from https://github.com/gyermich/reactnd-project-myreads-starter
+ - To install dependencies run `npm install'
+ - To start the server run 'npm start', the application will open in a new browser window
+
+
+# Project Overview
+
+MyReads is a book tracking app that allows you to select and categorize books that you are currentlu reading, read or want to read. The books can be searched, added to and moved from shelves.
+
 # MyReads Project
 
 This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
@@ -63,7 +75,7 @@ update(book, shelf)
 ```
 
 * book: `<Object>` containing at minimum an `id` attribute
-* shelf: `<String>` contains one of ["wantToRead", "currentlyReading", "read"]  
+* shelf: `<String>` contains one of ["wantToRead", "currentlyReading", "read"]
 * Returns a Promise which resolves to a JSON object containing the response data of the POST request
 
 ### `search`
