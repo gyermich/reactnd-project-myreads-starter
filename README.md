@@ -1,7 +1,7 @@
 # Instructions
 
 To run the application:
- - download the repository from https://github.com/gyermich/reactnd-project-myreads-starter
+ - Download the repository from https://github.com/gyermich/reactnd-project-myreads-starter
  - To install dependencies run `npm install'
  - To start the server run 'npm start', the application will open in a new browser window
 
