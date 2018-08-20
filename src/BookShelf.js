@@ -10,6 +10,7 @@ class BookShelf extends React.Component {
     render() {
         const shelf = this.props.shelf;
         const books = this.props.books;
+        const moveBookToShelf = this.props.moveBookToShelf;
         return (
             <div>
               <div className="bookshelf">
@@ -18,7 +19,7 @@ class BookShelf extends React.Component {
               */}
                 <h2 className="bookshelf-title" style={{textTransform: 'capitalize' }} >{this.formatCamelCaseToSentence(shelf)}</h2>
                 <div className="bookshelf-books">
-                  <BooksGrid books={books}/>
+                  <BooksGrid books={books} moveBookToShelf={moveBookToShelf}/>
                 </div>
               </div>
             </div>

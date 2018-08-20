@@ -12,26 +12,49 @@ class BooksApp extends React.Component {
     searchResults: [],
   }
 
-  handleSubmit = (e) => {
+  search = (e) => {
     e.preventDefault();
     const query = e.target.value.trim();
-    BooksAPI.search(query).then((results) => {
-      this.setState({ searchResults:  results})
-      // doesn't catch yet for some reason
-    }).catch((err) => {
-      this.setState({ searchResults: [] })
-    })
 
+    BooksAPI.search(query).then((results) => {
+      if (results.error) {
+        results = []
+      }
+      this.setState({ searchResults: results})
+    }).catch(err => {
+      this.setState({ searchResults: []})
+    })
   }
 
-  componentDidMount() {
+  sortBooksByShelf = (books) => {
+    // get list of distinct shelves
+    const shelve_names = books.map(book => book.shelf)
+      .filter((value, index, self) => self.indexOf(value) === index)
+    // add books and shelves
+    const shelvesWithBooks = shelve_names.map(shelf_name => {
+      return {
+        name: shelf_name,
+        books: books.filter(book => book.shelf === shelf_name)
+      }
+    });
+    return shelvesWithBooks
+  }
+
+  componentDidMount = () => {
     BooksAPI.getAll().then((books) => {
-       // get list of distinct shelves
-      const shelves = books.map(book => book.shelf)
-        .filter((value, index, self) => self.indexOf(value) === index)
-      // add books and shelves to state
-      this.setState({ shelves, books })
+      const shelves = this.sortBooksByShelf(books);
+      this.setState({shelves, books})
     })
+  }
+
+  moveBookToShelf = (book_to_update, shelf)  => {
+    BooksAPI.update(book_to_update, shelf).then((updated_book) => {
+      BooksAPI.getAll().then((books) => {
+        const shelves = this.sortBooksByShelf(books);
+        this.setState({shelves, books})
+      })
+    })
+
   }
 
   render() {
@@ -56,12 +79,12 @@ class BooksApp extends React.Component {
                   you don't find a specific author or title. Every search is limited by search terms.
                   { this.searchResults ? <BooksGrid books={this.state.searchResults}/> : 'No results' }
                 */}
-                <input type="text" placeholder="Search by title or author" onChange={this.handleSubmit}/>
+                <input type="text" placeholder="Search by title or author" onChange={this.search}/>
 
               </div>
             </div>
             <div className="search-books-results">
-              <BooksGrid books={this.state.searchResults}/>
+              <BooksGrid books={this.state.searchResults} moveBookToShelf={this.moveBookToShelf}/>
             </div>
           </div>
         )} />
@@ -72,7 +95,7 @@ class BooksApp extends React.Component {
             </div>
             <div className="list-books-content">
             { this.state.shelves.map(shelf =>
-              <BookShelf shelf={shelf} books={this.state.books.filter((book) => book.shelf === shelf)}/>
+              <BookShelf shelf={shelf.name} books={shelf.books} moveBookToShelf={this.moveBookToShelf}/>
             )}
 
             </div>
